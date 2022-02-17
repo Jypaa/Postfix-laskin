@@ -3,75 +3,79 @@
 #include<math.h>
 using namespace std;
 
-// The function calculate_Postfix returns the final answer of the expression after calculation
-int calculate_Postfix(string  post_exp)
-{
+int calculate_Postfix(string  post_exp){
+
     stack <int> stack;
     int len = post_exp.length();
+    int m[100] = {};
+    int indeksi = 0;
+    int joku = 0;
+    int b = 0;
+    int luku = 0;
 
-    // loop to iterate through the expression
-    for (int i = 0; i < len; i++)
-    {
+    //aletaan looppaan stringiä läpi
+    for (int i = 0; i < len; i++){   
 
-        // if the character is an operand we push it in the stack
-
-        // we have considered single digits only here
-        if ( post_exp[i] >= '0' &&  post_exp[i] <= '9')
-        {
-            stack.push( post_exp[i] - '0');
+        if (post_exp[i] >= '0' && post_exp[i] <= '9'){
+            stack.push(post_exp[i] - '0');
+            indeksi++;
         }
 
-        // if the character is an operator we enter else block
-        else
-        {
-            // we pop the top two elements from the stack and save them in two integers
-            
-            int a = stack.top();
-            stack.pop();
-            int b = stack.top();
-            stack.pop();
-   
-            //int c = stack.top();
-            //stack.pop();
-    
-            //performing the operation on the operands
-            switch (post_exp[i])
-            {
-                case 'x': //swap 
-                          stack.push(a);
-                          stack.push(b);
-                          break;
-                       
-                case '+': // addition
-                          stack.push(b + a );
-                          break;
-                case '-': // subtraction
-                          stack.push(b - a);
-                          break;
-                case '*': // multiplication
-                          stack.push(b * a);
-                          break;
-                case '/': // division
-                          stack.push(b / a);
-                          break;
-                case '^': // exponent
-                          stack.push(pow(b,a));
-                          break;
+        // jos onkin operaattori (ei luku väliltä 0-9) niin toteutetaan operaatio
+        else{   
+            int numero = len - indeksi;
+
+            // otetaan stackista kaikki numerot m arrayhin
+            for (int f = 0; f < indeksi; f++) {
+                m[f] = { stack.top() };
+                stack.pop();
+                joku++;   
             }
-        }
+            int laskin = indeksi-1;                     
+                switch (post_exp[i]){
+
+                case 'x': //swap 
+                    for (int f = 0; f < indeksi; f++) {
+                        stack.push(m[f]);
+                        laskin++;
+                    }
+                    break;
+
+                case 's': // sum
+                    for (int f = 0; f < len - numero; f++) {
+                        b = b + m[f];
+                    }
+                    stack.push(b);
+                    break;
+
+                case '-':  //minus
+                    b = m[0];
+                    for (int f = 1; f < len - numero; f++) {
+                        b = (m[f])-b;
+                    }
+                    stack.push(b);
+                    break;
+
+                case'a': //average
+                    for (int f = 0; f < len - numero; f++) {
+                        b = b + m[f];
+                    };
+                    b = b / indeksi;
+                    stack.push(b);
+            }
+        }   
     }
-
-    //returning the calculated result
     return stack.top();
-} 
+}
 
-//main function/ driver function
-int main(int argc, char* argv[])
-{
-    //we save the postfix expression to calculate in postfix_expression string
+int main(int argc, char* argv[]){
+    
     string postfix_expression = argv[1];
+    //string postfix_expression = "123a";
+    //string postfix_expression = "123s";
+    //string postfix_expression = "12x-";
 
-    cout<<"The answer after calculating the postfix expression is : ";
-    cout<<calculate_Postfix(postfix_expression) << endl;
+    cout << "The answer after calculating the postfix expression is : ";
+    cout << calculate_Postfix(postfix_expression) << endl;
     return 0;
 }
