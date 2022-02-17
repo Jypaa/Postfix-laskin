@@ -9,9 +9,7 @@ int calculate_Postfix(string  post_exp){
     int len = post_exp.length();
     int m[100] = {};
     int indeksi = 0;
-    int joku = 0;
     int b = 0;
-    int luku = 0;
 
     //aletaan looppaan stringiä läpi
     for (int i = 0; i < len; i++){   
@@ -28,8 +26,7 @@ int calculate_Postfix(string  post_exp){
             // otetaan stackista kaikki numerot m arrayhin
             for (int f = 0; f < indeksi; f++) {
                 m[f] = { stack.top() };
-                stack.pop();
-                joku++;   
+                stack.pop(); 
             }
             int laskin = indeksi-1;                     
                 switch (post_exp[i]){
