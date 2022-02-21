@@ -133,7 +133,7 @@ double calculate_Postfix(string  post_exp) {
                 break;
 
             case '%':  //remainder
-                b = fmod(m[0], m[1]);
+                b = fmod(m[1], m[0]);
                 stack.push(b);
                 break;
 
@@ -173,7 +173,7 @@ int main(int argc, char* argv[]) {
         cout << "Operaattorit ovat:\n + = pluslasku\n s = pluslasku\n - = miinuslasku\n x = vaihtaa kaksi ylinta lukua\n a = keskiarvo \n * = kertolasku\n / = jakolasku\n % = jakojaannos \n ^ = potenssi\n v = neliojuuri\n Aja ohjelma uudelleen" << endl;
     }
     else {
-        cout << "The answer after calculating the postfix expression is : ";
+        cout << "Laskutoimituksen tulos on: ";
         cout << calculate_Postfix(postfix_expression) << endl;
     }
     return 0;
